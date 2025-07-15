@@ -1,0 +1,258 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Magic Mile Calculator</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+            background: #f8f9fa;
+            padding: 20px;
+            line-height: 1.6;
+        }
+        
+        .calculator-container {
+            max-width: 500px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 8px;
+            padding: 24px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        
+        .calculator-title {
+            text-align: center;
+            color: #333;
+            margin-bottom: 20px;
+            font-size: 24px;
+            font-weight: 600;
+        }
+        
+        .input-section {
+            margin-bottom: 24px;
+        }
+        
+        .input-label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 500;
+            color: #555;
+        }
+        
+        .time-inputs {
+            display: flex;
+            gap: 10px;
+            align-items: center;
+            margin-bottom: 16px;
+        }
+        
+        .time-input {
+            width: 80px;
+            padding: 12px;
+            border: 2px solid #ddd;
+            border-radius: 6px;
+            font-size: 16px;
+            text-align: center;
+        }
+        
+        .time-input:focus {
+            outline: none;
+            border-color: #007cba;
+        }
+        
+        .time-label {
+            font-size: 14px;
+            color: #666;
+        }
+        
+        .results-section {
+            margin-top: 24px;
+        }
+        
+        .results-title {
+            font-size: 18px;
+            font-weight: 600;
+            color: #333;
+            margin-bottom: 16px;
+            text-align: center;
+        }
+        
+        .pace-result {
+            padding: 12px 16px;
+            margin-bottom: 8px;
+            background: #f1f3f4;
+            border-radius: 6px;
+            border-left: 4px solid #007cba;
+        }
+        
+        .pace-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 4px;
+        }
+        
+        .pace-distance {
+            font-weight: 500;
+            color: #333;
+        }
+        
+        .pace-time {
+            font-weight: 600;
+            color: #007cba;
+            font-size: 16px;
+        }
+        
+        .finish-time {
+            text-align: right;
+            font-size: 14px;
+            color: #666;
+            font-style: italic;
+        }
+        
+        .no-results {
+            text-align: center;
+            color: #666;
+            font-style: italic;
+            padding: 20px;
+        }
+        
+        @media (max-width: 480px) {
+            body {
+                padding: 10px;
+            }
+            
+            .calculator-container {
+                padding: 16px;
+            }
+            
+            .calculator-title {
+                font-size: 20px;
+            }
+            
+            .time-inputs {
+                justify-content: center;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="calculator-container">
+        <h1 class="calculator-title">Magic Mile Calculator</h1>
+        
+        <div class="input-section">
+            <label class="input-label">Enter your Magic Mile time:</label>
+            <div class="time-inputs">
+                <input type="number" id="minutes" class="time-input" min="0" max="59" placeholder="0">
+                <span class="time-label">min</span>
+                <input type="number" id="seconds" class="time-input" min="0" max="59" placeholder="0">
+                <span class="time-label">sec</span>
+            </div>
+        </div>
+        
+        <div class="results-section">
+            <h2 class="results-title">Your Training Paces</h2>
+            <div id="results-container">
+                <div class="no-results">Enter your Magic Mile time to see your training paces</div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function formatTimeVerbose(totalSeconds) {
+            const hours = Math.floor(totalSeconds / 3600);
+            const minutes = Math.floor((totalSeconds % 3600) / 60);
+            const seconds = Math.round(totalSeconds % 60);
+            
+            if (hours > 0) {
+                return `${hours}:${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
+            } else {
+                return `${minutes}:${seconds.toString().padStart(2, '0')}`;
+            }
+        }
+
+        function formatTime(totalSeconds) {
+            const minutes = Math.floor(totalSeconds / 60);
+            const seconds = Math.round(totalSeconds % 60);
+            return `${minutes}:${seconds.toString().padStart(2, '0')}`;
+        }
+
+        function calculatePaces() {
+            const minutes = parseInt(document.getElementById('minutes').value) || 0;
+            const seconds = parseInt(document.getElementById('seconds').value) || 0;
+            
+            if (minutes === 0 && seconds === 0) {
+                document.getElementById('results-container').innerHTML = 
+                    '<div class="no-results">Enter your Magic Mile time to see your training paces</div>';
+                return;
+            }
+            
+            // Convert to total seconds
+            const magicMileSeconds = (minutes * 60) + seconds;
+            
+            // Calculate paces according to the formulas with precise distance conversions to match original
+            const longRunPace = (magicMileSeconds * 1.3) + 120;
+            
+            const paces = [
+                { distance: 'Long Run', pace: longRunPace, miles: null }, // No finish time for long run
+                { distance: '5K', pace: magicMileSeconds + 33, miles: 3.106856 },
+                { distance: '10K', pace: magicMileSeconds * 1.15, miles: 6.213712 },
+                { distance: '10 Mile', pace: magicMileSeconds * 1.175, miles: 10.0 },
+                { distance: 'Half Marathon', pace: magicMileSeconds * 1.2, miles: 13.1104 },
+                { distance: 'Marathon', pace: magicMileSeconds * 1.3, miles: 26.2184 }
+            ];
+            
+            let resultsHTML = '';
+            paces.forEach(item => {
+                if (item.miles === null) {
+                    // Long Run Pace - no finish time
+                    resultsHTML += `
+                        <div class="pace-result">
+                            <div class="pace-header">
+                                <span class="pace-distance">${item.distance} Pace</span>
+                                <span class="pace-time">${formatTime(item.pace)} per mile</span>
+                            </div>
+                        </div>
+                    `;
+                } else {
+                    // Other paces with finish times
+                    const finishTime = item.pace * item.miles;
+                    resultsHTML += `
+                        <div class="pace-result">
+                            <div class="pace-header">
+                                <span class="pace-distance">${item.distance}</span>
+                                <span class="pace-time">${formatTime(item.pace)} per mile</span>
+                            </div>
+                            <div class="finish-time">Finish time: ${formatTimeVerbose(finishTime)}</div>
+                        </div>
+                    `;
+                }
+            });
+            
+            document.getElementById('results-container').innerHTML = resultsHTML;
+        }
+
+        // Add event listeners for real-time calculation
+        document.getElementById('minutes').addEventListener('input', calculatePaces);
+        document.getElementById('seconds').addEventListener('input', calculatePaces);
+        
+        // Validate input ranges
+        document.getElementById('minutes').addEventListener('blur', function() {
+            if (this.value > 59) this.value = 59;
+            if (this.value < 0) this.value = 0;
+        });
+        
+        document.getElementById('seconds').addEventListener('blur', function() {
+            if (this.value > 59) this.value = 59;
+            if (this.value < 0) this.value = 0;
+        });
+    </script>
+</body>
+</html>
