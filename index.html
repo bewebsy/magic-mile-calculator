@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Magic Mile Calculator</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
     <style>
         * {
             margin: 0;
@@ -12,44 +13,77 @@
         }
         
         body {
-            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
             background: #f8f9fa;
             padding: 20px;
             line-height: 1.6;
         }
         
-        .calculator-container {
-            max-width: 500px;
+        .container {
+            max-width: 600px;
             margin: 0 auto;
+        }
+        
+        .header-section {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+        
+        .main-title {
+            font-size: 28px;
+            font-weight: 600;
+            color: #333;
+            margin-bottom: 12px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+        
+        .subtitle {
+            font-size: 18px;
+            color: #666;
+            margin-bottom: 8px;
+            font-weight: 500;
+        }
+        
+        .instruction {
+            font-size: 16px;
+            color: #555;
+            font-weight: 400;
+        }
+        
+        .calculator-container {
             background: white;
-            border-radius: 8px;
-            padding: 24px;
-            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            border-radius: 12px;
+            padding: 32px;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.08);
+            margin-bottom: 40px;
         }
         
         .calculator-title {
             text-align: center;
             color: #333;
-            margin-bottom: 20px;
+            margin-bottom: 24px;
             font-size: 24px;
             font-weight: 600;
         }
         
         .input-section {
-            margin-bottom: 24px;
+            margin-bottom: 32px;
         }
         
         .input-label {
             display: block;
-            margin-bottom: 8px;
+            margin-bottom: 12px;
             font-weight: 500;
             color: #555;
+            font-size: 16px;
         }
         
         .time-inputs {
             display: flex;
-            gap: 10px;
+            gap: 12px;
             align-items: center;
+            justify-content: center;
             margin-bottom: 16px;
         }
         
@@ -57,39 +91,42 @@
             width: 80px;
             padding: 12px;
             border: 2px solid #ddd;
-            border-radius: 6px;
+            border-radius: 8px;
             font-size: 16px;
             text-align: center;
+            font-family: 'Inter', sans-serif;
+            transition: border-color 0.2s ease;
         }
         
         .time-input:focus {
             outline: none;
-            border-color: #007cba;
+            border-color: #4264f2;
         }
         
         .time-label {
             font-size: 14px;
             color: #666;
+            font-weight: 500;
         }
         
         .results-section {
-            margin-top: 24px;
+            margin-top: 32px;
         }
         
         .results-title {
-            font-size: 18px;
+            font-size: 20px;
             font-weight: 600;
             color: #333;
-            margin-bottom: 16px;
+            margin-bottom: 20px;
             text-align: center;
         }
         
         .pace-result {
-            padding: 12px 16px;
-            margin-bottom: 8px;
-            background: #f1f3f4;
-            border-radius: 6px;
-            border-left: 4px solid #007cba;
+            padding: 16px 20px;
+            margin-bottom: 12px;
+            background: #fbfbff;
+            border-radius: 8px;
+            border-left: 4px solid #4264f2;
         }
         
         .pace-header {
@@ -102,11 +139,12 @@
         .pace-distance {
             font-weight: 500;
             color: #333;
+            font-size: 16px;
         }
         
         .pace-time {
             font-weight: 600;
-            color: #007cba;
+            color: #4264f2;
             font-size: 16px;
         }
         
@@ -121,20 +159,74 @@
             text-align: center;
             color: #666;
             font-style: italic;
-            padding: 20px;
+            padding: 30px;
+            font-size: 16px;
+        }
+        
+        .instructions-section {
+            background: white;
+            border-radius: 12px;
+            padding: 32px;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.08);
+        }
+        
+        .instructions-title {
+            font-size: 24px;
+            font-weight: 700;
+            color: #333;
+            margin-bottom: 20px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+        
+        .instructions-list {
+            list-style: none;
+            padding: 0;
+        }
+        
+        .instructions-list li {
+            margin-bottom: 12px;
+            padding-left: 24px;
+            position: relative;
+            color: #555;
+            font-size: 16px;
+            line-height: 1.5;
+        }
+        
+        .instructions-list li::before {
+            content: counter(step-counter);
+            counter-increment: step-counter;
+            position: absolute;
+            left: 0;
+            top: 0;
+            background: #4264f2;
+            color: white;
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 12px;
+            font-weight: 600;
+        }
+        
+        .instructions-list {
+            counter-reset: step-counter;
         }
         
         @media (max-width: 480px) {
             body {
-                padding: 10px;
+                padding: 15px;
             }
             
-            .calculator-container {
-                padding: 16px;
+            .calculator-container,
+            .instructions-section {
+                padding: 20px;
             }
             
-            .calculator-title {
-                font-size: 20px;
+            .main-title {
+                font-size: 28px;
             }
             
             .time-inputs {
@@ -144,24 +236,41 @@
     </style>
 </head>
 <body>
-    <div class="calculator-container">
-        <h1 class="calculator-title">Magic Mile Calculator</h1>
+    <div class="container">
+        <div class="header-section">
+            <h1 class="main-title">Magic Mile Calculator</h1>
+            <p class="subtitle">Find your training and racing paces based on your Magic Mile time</p>
+            <p class="instruction">Enter your Magic Mile time to get your paces!</p>
+        </div>
         
-        <div class="input-section">
-            <label class="input-label">Enter your Magic Mile time:</label>
-            <div class="time-inputs">
-                <input type="number" id="minutes" class="time-input" min="0" max="59" placeholder="0">
-                <span class="time-label">min</span>
-                <input type="number" id="seconds" class="time-input" min="0" max="59" placeholder="0">
-                <span class="time-label">sec</span>
+        <div class="calculator-container">
+            <div class="input-section">
+                <label class="input-label">Enter your Magic Mile time:</label>
+                <div class="time-inputs">
+                    <input type="number" id="minutes" class="time-input" min="0" max="59" placeholder="0">
+                    <span class="time-label">min</span>
+                    <input type="number" id="seconds" class="time-input" min="0" max="59" placeholder="0">
+                    <span class="time-label">sec</span>
+                </div>
+            </div>
+            
+            <div class="results-section">
+                <h2 class="results-title">Your Training Paces</h2>
+                <div id="results-container">
+                    <div class="no-results">Enter your Magic Mile time to see your training paces</div>
+                </div>
             </div>
         </div>
         
-        <div class="results-section">
-            <h2 class="results-title">Your Training Paces</h2>
-            <div id="results-container">
-                <div class="no-results">Enter your Magic Mile time to see your training paces</div>
-            </div>
+        <div class="instructions-section">
+            <h2 class="instructions-title">Here's how to do the one-mile time trial:</h2>
+            <ol class="instructions-list">
+                <li>Warm up with a slow one-mile run</li>
+                <li>Do a few acceleration gliders.</li>
+                <li>Pace yourself as even as possible on each quarter mile.</li>
+                <li>Run about as hard as you could run for one mile–but no puking! (finish feeling that you couldn't have run more than a football field at the same pace)</li>
+                <li>Keep walking after the time trial for 5 minutes, and jog a slow 1-6 miles, as needed for the mileage for that day.</li>
+            </ol>
         </div>
     </div>
 
